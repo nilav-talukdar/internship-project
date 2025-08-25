@@ -102,51 +102,55 @@ The following ERD is generated from the Prisma schema and visualizes the core da
 
 ```mermaid
 erDiagram
-	USERS {
-		String id PK
-		String clerkUserId
-		String email
-		String name OPTIONAL
-		String imageUrl OPTIONAL
-		DateTime createdAt
-	}
-	ACCOUNTS {
-		String id PK
-		String name
-		AccountType type
-		Decimal balance
-		Boolean isDefault
-		String userId FK
-		DateTime createdAt
-	}
-	TRANSACTIONS {
-		String id PK
-		TransactionType type
-		Decimal amount
-		String description OPTIONAL
-		DateTime date
-		String category
-		String receiptUrl OPTIONAL
-		Boolean isRecurring
-		RecurringInterval recurringInterval OPTIONAL
-		DateTime nextRecurringDate OPTIONAL
-		TransactionStatus status
-		String userId FK
-		String accountId FK
-		DateTime createdAt
-	}
-	BUDGETS {
-		String id PK
-		Decimal amount
-		DateTime lastAlertSent OPTIONAL
-		String userId FK UNIQUE
-		DateTime createdAt
-	}
+    USERS {
+        UUID id PK
+        String clerkUserId
+        String email
+        String name
+        String imageUrl
+        DateTime createdAt
+    }
 
-	USERS ||--o{ ACCOUNTS : has
-	USERS ||--o{ TRANSACTIONS : creates
-	USERS ||--|| BUDGETS : has_1to1
-	ACCOUNTS ||--o{ TRANSACTIONS : contains
+    ACCOUNTS {
+        UUID id PK
+        String name
+        Enum type
+        Decimal balance
+        Boolean isDefault
+        UUID userId FK
+        DateTime createdAt
+    }
+
+    TRANSACTIONS {
+        UUID id PK
+        Enum type
+        Decimal amount
+        String description
+        DateTime date
+        String category
+        String receiptUrl
+        Boolean isRecurring
+        Enum recurringInterval
+        DateTime nextRecurringDate
+        Enum status
+        UUID userId FK
+        UUID accountId FK
+        DateTime createdAt
+    }
+
+    BUDGETS {
+        UUID id PK
+        Decimal amount
+        DateTime lastAlertSent
+        UUID userId FK UNIQUE
+        DateTime createdAt
+    }
+
+    %% Relationships
+    USERS ||--o{ ACCOUNTS : owns
+    USERS ||--o{ TRANSACTIONS : makes
+    USERS ||--|| BUDGETS : has
+    ACCOUNTS ||--o{ TRANSACTIONS : records
 
 ```
 
