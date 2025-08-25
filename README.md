@@ -90,7 +90,8 @@ flowchart LR
 	Next -->|send email| Resend[Resend]
 	Inngest -->|background jobs| PrismaClient
 	ArcJet -->|bot detection / shield| Next
-	note right of DB: Models: User, Account, Transaction, Budget
+	DB --> NoteDB[/"Models: User, Account, Transaction, Budget"/]
+
 ```
 
 ---
@@ -102,11 +103,11 @@ The following ERD is generated from the Prisma schema and visualizes the core da
 ```mermaid
 erDiagram
 	USERS {
-		String id PK "uuid"
-		String clerkUserId "clerk id"
+		String id PK
+		String clerkUserId
 		String email
-		String name "optional"
-		String imageUrl "optional"
+		String name OPTIONAL
+		String imageUrl OPTIONAL
 		DateTime createdAt
 	}
 	ACCOUNTS {
@@ -122,13 +123,13 @@ erDiagram
 		String id PK
 		TransactionType type
 		Decimal amount
-		String description "optional"
+		String description OPTIONAL
 		DateTime date
 		String category
-		String receiptUrl "optional"
+		String receiptUrl OPTIONAL
 		Boolean isRecurring
-		RecurringInterval recurringInterval "optional"
-		DateTime nextRecurringDate "optional"
+		RecurringInterval recurringInterval OPTIONAL
+		DateTime nextRecurringDate OPTIONAL
 		TransactionStatus status
 		String userId FK
 		String accountId FK
@@ -137,15 +138,16 @@ erDiagram
 	BUDGETS {
 		String id PK
 		Decimal amount
-		DateTime lastAlertSent "optional"
+		DateTime lastAlertSent OPTIONAL
 		String userId FK UNIQUE
 		DateTime createdAt
 	}
 
-	USERS ||--o{ ACCOUNTS : "has"
-	USERS ||--o{ TRANSACTIONS : "creates"
-	USERS ||--|| BUDGETS : "has (1:1)"
-	ACCOUNTS ||--o{ TRANSACTIONS : "contains"
+	USERS ||--o{ ACCOUNTS : has
+	USERS ||--o{ TRANSACTIONS : creates
+	USERS ||--|| BUDGETS : has_1to1
+	ACCOUNTS ||--o{ TRANSACTIONS : contains
+
 ```
 
 ---
