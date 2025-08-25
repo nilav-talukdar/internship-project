@@ -80,10 +80,10 @@ flowchart LR
 		U --> B
 	end
 
-	B -->|HTTP/HTTPS| Next[Next.js app (app/)]
+	B -->|HTTP/HTTPS| Next["Next.js app (app/)"]
 	Next -->|auth| Clerk[Clerk Auth]
 	Next -->|middleware| ArcJet[ArcJet Middleware]
-	Next -->|API calls| APIRoutes[API Routes (app/api/, actions/)]
+	Next -->|API calls| APIRoutes["API Routes (app/api/, actions/)"]
 	APIRoutes --> Inngest[Inngest functions]
 	APIRoutes --> PrismaClient[Prisma Client]
 	PrismaClient --> DB[(Postgres Database)]
@@ -105,8 +105,8 @@ erDiagram
 		String id PK "uuid"
 		String clerkUserId "clerk id"
 		String email
-		String? name
-		String? imageUrl
+		String name "optional"
+		String imageUrl "optional"
 		DateTime createdAt
 	}
 	ACCOUNTS {
@@ -122,13 +122,13 @@ erDiagram
 		String id PK
 		TransactionType type
 		Decimal amount
-		String? description
+		String description "optional"
 		DateTime date
 		String category
-		String? receiptUrl
+		String receiptUrl "optional"
 		Boolean isRecurring
-		RecurringInterval? recurringInterval
-		DateTime? nextRecurringDate
+		RecurringInterval recurringInterval "optional"
+		DateTime nextRecurringDate "optional"
 		TransactionStatus status
 		String userId FK
 		String accountId FK
@@ -137,7 +137,7 @@ erDiagram
 	BUDGETS {
 		String id PK
 		Decimal amount
-		DateTime? lastAlertSent
+		DateTime lastAlertSent "optional"
 		String userId FK UNIQUE
 		DateTime createdAt
 	}
